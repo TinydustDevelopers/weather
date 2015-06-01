@@ -37,9 +37,9 @@ var day = (function () {
 })();
 
 
-// is the app installed on home screen
+// is the app installed on home screen or on CloudBox (http://cloudbox.tinydust.cn)
 void function standalone() {
-  if (navigator.standalone) body.classList.add('standalone');
+  if (navigator.standalone || navigator.userAgent.match(/CloudG/i) !== null) body.classList.add('standalone');
 } ();
 
 // fetch data
