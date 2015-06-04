@@ -39,7 +39,7 @@ var day = (function () {
 
 // is the app installed on home screen or on CloudBox (http://cloudbox.tinydust.cn)
 void function standalone() {
-  if (navigator.standalone || navigator.userAgent.match(/CloudG/i) !== null) body.classList.add('standalone');
+  if (navigator.standalone || navigator.userAgent.match(/CloudG/i) == null) body.classList.remove('standalone');
 } ();
 
 // fetch data
@@ -50,14 +50,16 @@ void function weather() {
   var fish = document.querySelector('#fish');
   var data = cache();
 
-  if (data) {
+  if (0) {
     loaded(), render(data, true);
   } else {
     this.render = render;
 
     script.onload = loaded;
-    script.src = 'http://api.openweathermap.org/data/2.5/forecast?q=Shanghai,cn&lang=zh_cn&callback=render';
-    body.appendChild(script);
+    getCity(function(city) {
+      script.src = 'http://api.openweathermap.org/data/2.5/forecast?q='+city+',cn&lang=zh_cn&callback=render';
+      body.appendChild(script);
+    });
   }
 
   // render data
@@ -249,4 +251,34 @@ function cache(data) {
       data: data
     }));
   }
-}
+};
+
+function getCity(callback) {
+  AMap.service(["AMap.CitySearch"], function() {
+    var citySearcher = new AMap.CitySearch();
+    citySearcher.getLocalCity(function(status, result) {
+      switch(status) {
+        case 'complete': {
+          var city = result.city.slice(0,result.city.length-1);
+          var py = codefans_net_CC2PY(city);
+          callback(py);
+        }break;
+        case 'error': callback('Beijing');break;
+        default: callback('Beijing');break;
+      }
+    });
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
