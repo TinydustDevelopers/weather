@@ -38,9 +38,9 @@ var day = (function () {
 
 
 // is the app installed on home screen or on CloudBox (http://cloudbox.tinydust.cn)
-void function standalone() {
-  if (!navigator.standalone && navigator.userAgent.match(/CloudG/i) == null) body.classList.remove('standalone');
-} ();
+// void function standalone() {
+//   if (!navigator.standalone && navigator.userAgent.match(/CloudG/i) == null) body.classList.remove('standalone');
+// } ();
 
 // fetch data
 void function weather() {
@@ -57,7 +57,7 @@ void function weather() {
 
     script.onload = loaded;
     getCity(function(city) {
-      script.src = 'http://api.openweathermap.org/data/2.5/forecast?q='+city+',cn&lang=zh_cn&callback=render';
+      script.src = 'http://api.openweathermap.org/data/2.5/forecast?q='+city+',cn&lang=zh_cn&callback=render&APPID=3996b4c1c0a0cbebd60abcd02bcd7f57';
       body.appendChild(script);
     });
   }
@@ -70,7 +70,7 @@ void function weather() {
     fish.innerHTML = fish.innerHTML + template(data);
     chart(data.chart);
   }
-  
+
   // remove the loading icon
   function loaded() {
     var loading = $('#loading', fish);
@@ -94,7 +94,7 @@ function compose(data) {
   })[0];
 
   var _today = today(Date.now());
-  
+
   // today
   var current = {
     city: data.city.name + ',' + data.city.country,
@@ -224,7 +224,7 @@ function today(str) {
   var d = new Date(str);
   return [d.getFullYear(), d.getMonth() + 1, d.getDate(), d.getDay()]
 }
-  
+
 // render tmpl
 function template(data) {
   return Mustache.render($('#template').innerHTML, data);
@@ -269,16 +269,3 @@ function getCity(callback) {
     });
   });
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
